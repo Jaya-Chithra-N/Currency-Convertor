@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Currency Convertor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      width: 300px;
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    input, select, input[type="button"] {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    input[type="button"] {
+      background: #007bff;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    input[type="button"]:hover {
+      background: #0056b3;
+    }
+
+    h2 {
+      margin-top: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <label for="amt">Amount to Convert</label>
+    <input type="text" name="amt" id="amt">
+
+    <label for="fromamt">From:</label>
+    <select id="fromamt">
+      <option value="">Select One …</option>
+      <option value="INR">INR India</option>
+      <option value="USD">USD US Dollar</option>
+      <option value="EUR">EUR Euro</option>
+      <option value="JPY">JPY Japanese Yen</option>
+    </select>
+
+    <label for="toamt">To:</label>
+    <select id="toamt">
+      <option value="">Select One …</option>
+      <option value="INR">INR India</option>
+      <option value="USD">USD US Dollar</option>
+      <option value="EUR">EUR Euro</option>
+      <option value="JPY">JPY Japanese Yen</option>
+    </select>
+
+    <input type="button" value="Convert" onclick="convert()">
+
+    <h2>Converted Amount: <span id="result"></span></h2>
+  </div>
+
+  <script>
+    const exchangeRates = {
+      INR: { USD: 0.012, EUR: 0.011, JPY: 1.81, INR: 1 },
+      USD: { INR: 86.21, EUR: 0.95, JPY: 156.12, USD: 1 },
+      EUR: { INR: 90.49, USD: 1.05, JPY: 164.00, EUR: 1 },
+      JPY: { INR: 0.55, USD: 0.0064, EUR: 0.0061, JPY: 1 }
+    };
+
+    function convert() {
+      const amount = parseFloat(document.getElementById("amt").value);
+      const fromCurrency = document.getElementById("fromamt").value;
+      const toCurrency = document.getElementById("toamt").value;
+
+      if (isNaN(amount) || amount <= 0) {
+        window.alert("Please enter a valid amount.");
+        return;
+      }
+
+      if (!fromCurrency || !toCurrency) {
+        window.alert("Please select both currencies.");
+        return;
+      }
+
+      if (fromCurrency === toCurrency) {
+        window.alert("Please select different currencies.");
+        return;
+      }
+
+      const rate = exchangeRates[fromCurrency][toCurrency];
+
+      const convertedAmount = (amount * rate).toFixed(2);
+      document.getElementById("result").innerText = `${convertedAmount} ${toCurrency}`;
+    }
+  </script>
+</body>
+
+</html>
